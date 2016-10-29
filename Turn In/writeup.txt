@@ -1,0 +1,13 @@
+1.  How would hashing the url commands with the user's password as a key prevent length extension attacks?
+
+Changing the API in Section 1.2 to utilize a token that uses an HMAC that hashes the user and commands with the user's password (rather than hashing the concatenation of the password + user&commands) would prevent a length extension attack because the password is not in the token.  This means that the hacker could no longer free ride malicious commands onto the token and URL.  Furthermore, the hacker cannot generate a hash even if they knew exactly was the message was. This is because they need the user's password to generate the hash.
+
+2) Danger posed by programs generated using hash collisions:
+
+A system such as a Linux package manager signs the hash of a program in order to provide confirmation that code being installed or executed is what you expect it to be - it provides program integrity when it is functioning properly.
+
+A convenient way for an attacker to use hash collisions would be to take a program that has already been signed by an authority, and to create a malicious program with the same hash. However, the collision technique we have used does not allow us to match any hash; instead, we can only generate two programs with different functionality but the same MD5 hash.
+
+An attacker can create a "good" (perhaps even useful) program and a malicious program with the same hash, using the same method we used in Section 2.2. The attacker can then submit the good program to the authority for signing; as it causes no harm, the authority might be willing to sign the hash of the program. The attacker can then distribute the malicious program with the certificate for the good program; since their hashes are the same, the certificate will appear valid.
+
+If the creator of the program is also the distributor, this distribution of the malicious program is easy; if not, they may need to use more advanced techniques such as sitting in on an open network. It might also work better for the attacker if the good program is truly neccesary or useful, since the authority is more likely to sign the certificate and more end users are likely to download the program.
